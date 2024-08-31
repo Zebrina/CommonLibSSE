@@ -179,6 +179,7 @@ namespace RE
 		bool                    InLowProcess() const;
 		bool                    IsArrested() const;
 		bool                    IsGhost() const;
+		bool                    IsInCommandState() const;
 		void                    KnockExplosion(Actor* a_actor, const NiPoint3& a_location, float a_magnitude);
 		bool                    PlayIdle(Actor* a_actor, TESIdleForm* a_idle, TESObjectREFR* a_target);
 		void                    SetActorsDetectionEvent(Actor* a_actor, const NiPoint3& a_location, std::int32_t a_soundLevel, TESObjectREFR* a_ref);
@@ -216,7 +217,7 @@ namespace RE
 		std::uint64_t                                   unk108;                         // 108
 		RefHandle                                       followTarget;                   // 110
 		RefHandle                                       target;                         // 114
-		std::uint64_t                                   unk118;                         // 118
+		RefHandle                                       arrestTarget;                   // 118
 		std::uint64_t                                   unk120;                         // 120
 		std::uint64_t                                   unk128;                         // 128
 		std::uint32_t                                   unk130;                         // 130

@@ -11,6 +11,13 @@ namespace RE
 		return *singleton;
 	}
 
+	bool Main::IsRoomVisible(NiNode* a_room)
+	{
+		using func_t = decltype(&Main::IsRoomVisible);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(35608, 36618) };
+		return func(this, a_room);
+	}
+
 	float Main::QFrameAnimTime()
 	{
 		REL::Relocation<float*> data{ RELOCATION_ID(516940, 403447) };
@@ -20,7 +27,7 @@ namespace RE
 	NiCamera* Main::WorldRootCamera()
 	{
 		using func_t = decltype(&Main::WorldRootCamera);
-		REL::Relocation<func_t> func{ RELOCATION_ID(35601, 36609) };
+		static REL::Relocation<func_t> func{ RELOCATION_ID(35601, 36609) };
 		return func();
 	}
 
@@ -33,7 +40,7 @@ namespace RE
 	void Main::SetActive(bool a_active)
 	{
 		using func_t = decltype(&Main::SetActive);
-		REL::Relocation<func_t> func{ RELOCATION_ID(35598, 36606) };
+		static REL::Relocation<func_t> func{ RELOCATION_ID(35598, 36606) };
 		return func(this, a_active);
 	}
 }
