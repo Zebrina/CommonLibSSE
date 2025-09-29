@@ -4,8 +4,10 @@
 #include "RE/F/FixedStrings.h"
 #include "RE/F/FormTraits.h"
 #include "RE/H/HighProcessData.h"
+#include "RE/I/InventoryEntryData.h"
 #include "RE/M/MiddleHighProcessData.h"
 #include "RE/N/NiAVObject.h"
+#include "RE/P/ProcessType.h"
 #include "SKSE/API.h"
 
 namespace RE
@@ -56,6 +58,13 @@ namespace RE
 	TESShout* AIProcess::GetCurrentShout()
 	{
 		return high ? high->currentShout : nullptr;
+	}
+
+	InventoryEntryData* AIProcess::GetCurrentWeapon(bool a_leftHand)
+	{
+		using func_t = decltype(&AIProcess::GetCurrentWeapon);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(38781, 39806) };
+		return func(this, a_leftHand);
 	}
 
 	TESForm* AIProcess::GetEquippedLeftHand()
@@ -137,6 +146,15 @@ namespace RE
 			package = currentPackage.package;
 		}
 		return package;
+	}
+
+	NiAVObject* AIProcess::GetTorchNode(const BSTSmartPointer<BipedAnim>& a_biped) const
+	{
+		if (middleHigh && a_biped) {
+			return a_biped->root->GetObjectByName(FixedStrings::GetSingleton()->shield);
+		}
+
+		return nullptr;
 	}
 
 	Actor* AIProcess::GetUserData() const

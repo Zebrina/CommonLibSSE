@@ -519,6 +519,7 @@ namespace RE
 		bool                         CanUseIdle(TESIdleForm* a_idle) const;
 		void                         CastPermanentMagic(bool a_wornItemEnchantments, bool a_baseSpells, bool a_raceSpells, bool a_everyActorAbility);
 		void                         ClearArrested();
+		void                         ClearDeathState();
 		void                         ClearExpressionOverride();
 		inline void                  ClearExtraArrows() { RemoveExtraArrows3D(); }
 		ActorHandle                  CreateRefHandle();
@@ -533,6 +534,7 @@ namespace RE
 		void                         EvaluatePackage(bool a_immediate = false, bool a_resetAI = false);
 		TESNPC*                      GetActorBase();
 		const TESNPC*                GetActorBase() const;
+		float                        GetActorValueMax(ActorValue a_value) const;
 		float                        GetActorValueModifier(ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) const;
 		float                        GetAimAngle() const;
 		float                        GetAimHeading() const;

@@ -10,24 +10,17 @@
 namespace RE
 {
 	enum class RESET_3D_FLAGS;
+	enum class PROCESS_TYPE;
 	class Actor;
 	class bhkCharacterController;
 	class BipedAnim;
+	class InventoryEntryData;
 	class NiAVObject;
 	class NiPoint3;
 	class TESForm;
 	class TESShout;
 	struct HighProcessData;
 	struct MiddleHighProcessData;
-
-	enum class PROCESS_TYPE
-	{
-		kNone = static_cast<std::underlying_type_t<PROCESS_TYPE>>(-1),
-		kHigh = 0,
-		kMiddleHigh = 1,
-		kMiddleLow = 2,
-		kLow = 3
-	};
 
 	class MiddleLowProcessData
 	{
@@ -164,6 +157,7 @@ namespace RE
 		bhkCharacterController* GetCharController();
 		ActorHandle             GetCommandingActor() const;
 		TESShout*               GetCurrentShout();
+		InventoryEntryData*     GetCurrentWeapon(bool a_leftHand);
 		TESForm*                GetEquippedLeftHand();
 		TESForm*                GetEquippedRightHand();
 		ObjectRefHandle         GetHeadtrackTarget() const;
@@ -172,6 +166,7 @@ namespace RE
 		ObjectRefHandle         GetOccupiedFurniture() const;
 		float                   GetRegenDelay(ActorValue a_actorvalue) const;
 		TESPackage*             GetRunningPackage() const;
+		NiAVObject*             GetTorchNode(const BSTSmartPointer<BipedAnim>& a_biped) const;
 		Actor*                  GetUserData() const;
 		float                   GetVoiceRecoveryTime() const;
 		NiAVObject*             GetWeaponNode(const BSTSmartPointer<BipedAnim>& a_biped) const;

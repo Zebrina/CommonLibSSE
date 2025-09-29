@@ -195,6 +195,13 @@ namespace RE
 		}
 	}
 
+	void Actor::ClearDeathState()
+	{
+		using func_t = decltype(&Actor::ClearDeathState);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(36605, 37613) };
+		return func(this);
+	}
+
 	void Actor::ClearExpressionOverride()
 	{
 		auto faceGen = GetFaceGenAnimationData();
@@ -286,6 +293,12 @@ namespace RE
 	{
 		auto obj = GetBaseObject();
 		return obj ? obj->As<TESNPC>() : nullptr;
+	}
+
+	float Actor::GetActorValueMax(ActorValue a_value) const
+	{
+		return GetPermanentActorValue(a_value) +
+		       GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, a_value);
 	}
 
 	float Actor::GetActorValueModifier(ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) const

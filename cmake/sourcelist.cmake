@@ -237,6 +237,7 @@ set(SOURCES
 	include/RE/B/BSFaceGenModel.h
 	include/RE/B/BSFaceGenNiNode.h
 	include/RE/B/BSFadeNode.h
+	include/RE/B/BSFadeNodeCuller.h
 	include/RE/B/BSFile.h
 	include/RE/B/BSFixedString.h
 	include/RE/B/BSFurnitureMarkerNode.h
@@ -311,6 +312,7 @@ set(SOURCES
 	include/RE/B/BSParticleShaderProperty.h
 	include/RE/B/BSParticleShaderRainEmitter.h
 	include/RE/B/BSParticleShaderSnowEmitter.h
+	include/RE/B/BSPathing.h
 	include/RE/B/BSPathingCell.h
 	include/RE/B/BSPointerHandle.h
 	include/RE/B/BSPointerHandleManager.h
@@ -337,6 +339,7 @@ set(SOURCES
 	include/RE/B/BSSceneGraph.h
 	include/RE/B/BSScriptObjectBindPolicy.h
 	include/RE/B/BSShader.h
+	include/RE/B/BSShaderAccumulator.h
 	include/RE/B/BSShaderManager.h
 	include/RE/B/BSShaderMaterial.h
 	include/RE/B/BSShaderProperty.h
@@ -467,6 +470,7 @@ set(SOURCES
 	include/RE/C/CharEvent.h
 	include/RE/C/Character.h
 	include/RE/C/ChestsLooted.h
+	include/RE/C/ClickHandler.h
 	include/RE/C/CloakEffect.h
 	include/RE/C/Clouds.h
 	include/RE/C/CodeTasklet.h
@@ -518,6 +522,7 @@ set(SOURCES
 	include/RE/C/ConsoleData.h
 	include/RE/C/ConsoleLog.h
 	include/RE/C/ConsoleNativeUIMenu.h
+	include/RE/C/ConsoleOpenHandler.h
 	include/RE/C/ConstructibleObjectMenu.h
 	include/RE/C/ContainerItemExtra.h
 	include/RE/C/ContainerMenu.h
@@ -548,6 +553,7 @@ set(SOURCES
 	include/RE/D/DialogueMenu.h
 	include/RE/D/DialoguePackage.h
 	include/RE/D/DialogueTypes.h
+	include/RE/D/DirectionHandler.h
 	include/RE/D/DisarmEffect.h
 	include/RE/D/DisarmedEvent.h
 	include/RE/D/DisguiseEffect.h
@@ -745,6 +751,7 @@ set(SOURCES
 	include/RE/F/FightReactions.h
 	include/RE/F/FileID.h
 	include/RE/F/FindMaxMagnitudeVisitor.h
+	include/RE/F/FindTriangleForLocationFilterCheckDeltaZ.h
 	include/RE/F/FirstPersonState.h
 	include/RE/F/FixedStrings.h
 	include/RE/F/FlameProjectile.h
@@ -936,6 +943,7 @@ set(SOURCES
 	include/RE/H/HeapBlock.h
 	include/RE/H/HeapBlockFreeHead.h
 	include/RE/H/HeldStateHandler.h
+	include/RE/H/HighActorCuller.h
 	include/RE/H/HighProcessData.h
 	include/RE/H/HitData.h
 	include/RE/H/HorseCameraState.h
@@ -948,8 +956,11 @@ set(SOURCES
 	include/RE/H/hkContactPointMaterial.h
 	include/RE/H/hkContainerAllocators.h
 	include/RE/H/hkFinishLoadedObjectFlag.h
+	include/RE/H/hkLifoAllocator.h
 	include/RE/H/hkMatrix3.h
 	include/RE/H/hkMemoryAllocator.h
+	include/RE/H/hkMemoryRouter.h
+	include/RE/H/hkMemorySystem.h
 	include/RE/H/hkMoppBvTreeShapeBase.h
 	include/RE/H/hkMotionState.h
 	include/RE/H/hkMultiThreadCheck.h
@@ -1247,6 +1258,7 @@ set(SOURCES
 	include/RE/M/Misc.h
 	include/RE/M/MissileProjectile.h
 	include/RE/M/MistMenu.h
+	include/RE/M/MobIterOperator.h
 	include/RE/M/ModManagerMenu.h
 	include/RE/M/ModelReferenceEffect.h
 	include/RE/M/Moon.h
@@ -1264,9 +1276,13 @@ set(SOURCES
 	include/RE/N/NavMesh.h
 	include/RE/N/NavMeshInfoMap.h
 	include/RE/N/NiAVObject.h
+	include/RE/N/NiAVObjectPalette.h
+	include/RE/N/NiAccumulator.h
 	include/RE/N/NiAllocator.h
+	include/RE/N/NiAlphaAccumulator.h
 	include/RE/N/NiAlphaProperty.h
 	include/RE/N/NiAnimationKey.h
+	include/RE/N/NiBackToFrontAccumulator.h
 	include/RE/N/NiBillboardNode.h
 	include/RE/N/NiBinaryStream.h
 	include/RE/N/NiBoneMatrixSetterI.h
@@ -1282,6 +1298,7 @@ set(SOURCES
 	include/RE/N/NiControllerManager.h
 	include/RE/N/NiControllerSequence.h
 	include/RE/N/NiCullingProcess.h
+	include/RE/N/NiDefaultAVObjectPalette.h
 	include/RE/N/NiDirectionalLight.h
 	include/RE/N/NiExtraData.h
 	include/RE/N/NiFile.h
@@ -1387,6 +1404,7 @@ set(SOURCES
 	include/RE/P/Precipitation.h
 	include/RE/P/PrecomputedNavmeshInfoPathMap.h
 	include/RE/P/ProcessLists.h
+	include/RE/P/ProcessType.h
 	include/RE/P/Profiler.h
 	include/RE/P/Projectile.h
 	include/RE/P/PropertyTypeInfo.h
@@ -1785,6 +1803,8 @@ set(SOURCES
 	src/RE/B/BSDirectInputManager.cpp
 	src/RE/B/BSEffectShaderData.cpp
 	src/RE/B/BSExtraData.cpp
+	src/RE/B/BSFaceGenAnimationData.cpp
+	src/RE/B/BSFaceGenKeyframeMultiple.cpp
 	src/RE/B/BSFixedString.cpp
 	src/RE/B/BSGamepadDevice.cpp
 	src/RE/B/BSHandleRefObject.cpp
