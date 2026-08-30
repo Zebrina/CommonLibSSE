@@ -1,6 +1,8 @@
 #pragma once
 
+#include "RE/B/BSShaderManager.h"
 #include "RE/N/NiAlphaAccumulator.h"
+#include "RE/N/NiColor.h"
 
 namespace RE
 {
@@ -24,6 +26,11 @@ namespace RE
 		inline static constexpr auto Ni_RTTI = NiRTTI_BSShaderAccumulator;
 		inline static constexpr auto VTABLE = VTABLE_BSShaderAccumulator;
 
+		[[nodiscard]] static BSShaderAccumulator* Create(std::uint32_t a_unk);
+		[[nodiscard]] static BSShaderAccumulator* GetCurrentAccumulator();
+		static void                               SetCurrentAccumulator(BSShaderAccumulator* a_accumulator);
+		void                                      RenderFirstPersonView_End(bool a_force);
+
 		~BSShaderAccumulator() override = default;  // 00
 
 		// override (NiObject)
@@ -38,7 +45,7 @@ namespace RE
 		// add
 		virtual void FinishAccumulatingPreResolveDepth(std::uint32_t flags);   // 2A
 		virtual void FinishAccumulatingPostResolveDepth(std::uint32_t flags);  // 2B
-		virtual void Unk_2C();                                                 // 2C
+		virtual void Unk_2C() = 0;                                             // 2C
 
 		std::uint8_t     unk58[0x4];                // 58
 		bool             unk5C;                     // 5C
@@ -71,14 +78,21 @@ namespace RE
 		std::uint32_t    currentBucket;             // 13C
 		bool             currentActive;             // 140
 		std::uint8_t     pad141[0x7];               // 141
-		ShadowSceneNode* activeShadowSceneNode;     // 148
-		std::uint32_t    renderMode;                // 150
-		std::uint8_t     pad154[0x4];               // 154
-		void*            unk158;                    // 158
-		void*            unk160;                    // 160
-		std::uint32_t    unk168;                    // 168
-		NiPoint3         eyePosition;               // 16C
-		std::uint8_t     unk178[0x8];               // 178
+		union
+		{
+			BSShaderManager::State* shaderManagerState;     // 148
+			ShadowSceneNode*        activeShadowSceneNode;  // 148
+		};
+		std::uint32_t renderMode;   // 150
+		std::uint8_t  pad154[0x4];  // 154
+		void*         unk158;       // 158
+		void*         unk160;       // 160
+		std::uint32_t unk168;       // 168
+		NiPoint3      eyePosition;  // 16C
+		std::uint8_t  unk178[0x8];  // 178
+
+	protected:
+		BSShaderAccumulator* Ctor(std::uint32_t a_unk);
 	};
 	static_assert(sizeof(BSShaderAccumulator) == 0x180);
 }

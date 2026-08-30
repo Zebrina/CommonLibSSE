@@ -5,9 +5,9 @@
 #include "RE/B/BSContainer.h"
 #include "RE/B/BSMultiBoundNode.h"
 #include "RE/B/BSPointerHandle.h"
+#include "RE/B/BSSimpleList.h"
 #include "RE/B/BSTArray.h"
 #include "RE/B/BSTHashMap.h"
-#include "RE/B/BSTList.h"
 #include "RE/C/Color.h"
 #include "RE/E/ExtraDataList.h"
 #include "RE/F/FormTypes.h"
@@ -54,16 +54,16 @@ namespace RE
 		};
 
 		// members
-		std::int32_t                             cellX;          // 00
-		std::int32_t                             cellY;          // 04
-		char*                                    maxHeightData;  // 08
-		BGSTerrainVisibilityData*                lodVisData;     // 10
-		float                                    worldX;         // 18
-		float                                    worldY;         // 1C
-		REX::EnumSet<LandHideFlag, std::uint8_t> landHideFlags;  // 20
-		std::uint8_t                             pad21;          // 21
-		std::uint16_t                            pad22;          // 22
-		std::uint32_t                            pad24;          // 24
+		std::int32_t                              cellX;          // 00
+		std::int32_t                              cellY;          // 04
+		char*                                     maxHeightData;  // 08
+		BGSTerrainVisibilityData*                 lodVisData;     // 10
+		float                                     worldX;         // 18
+		float                                     worldY;         // 1C
+		REX::TEnumSet<LandHideFlag, std::uint8_t> landHideFlags;  // 20
+		std::uint8_t                              pad21;          // 21
+		std::uint16_t                             pad22;          // 22
+		std::uint32_t                             pad24;          // 24
 	};
 	static_assert(sizeof(EXTERIOR_DATA) == 0x28);
 
@@ -175,22 +175,22 @@ namespace RE
 		~TESObjectCELL() override;  // 00
 
 		// override (TESForm)
-		void        ClearData() override;                                                                 // 05
-		bool        Load(TESFile* a_mod) override;                                                        // 06
-		TESForm*    CreateDuplicateForm(bool a_createEditorID, void* a_arg2) override;                    // 09 - { return 0; }
-		bool        FindInFileFast(TESFile* a_mod) override;                                              // 0C
-		void        SaveGame(BGSSaveFormBuffer* a_buf) override;                                          // 0E
-		void        LoadGame(BGSLoadFormBuffer* a_buf) override;                                          // 0F
-		void        Revert(BGSLoadFormBuffer* a_buf) override;                                            // 12
-		void        InitItemImpl() override;                                                              // 13
-		void        GetFormDetailedString(char* a_buf, std::uint32_t a_bufLen) override;                  // 16
-		void        SetAltered(bool a_set) override;                                                      // 24
-		bool        BelongsInGroup(FORM* a_form, bool a_allowParentGroups, bool a_currentOnly) override;  // 30
-		void        CreateGroupData(FORM* a_form, FORM_GROUP* a_group) override;                          // 31
-		const char* GetFormEditorID() const override;                                                     // 32
-		bool        SetFormEditorID(const char* a_str) override;                                          // 33
-		bool        IsParentForm() override;                                                              // 34 - { return true; }
-		bool        IsFormTypeChild(FormType a_type) override;                                            // 36
+		void        ClearData() override;                                                                               // 05
+		bool        Load(TESFile* a_mod) override;                                                                      // 06
+		TESForm*    CreateDuplicateForm(bool a_createEditorID, NiTPointerMap<TESForm*, TESForm*>* a_copyMap) override;  // 09 - { return 0; }
+		bool        FindInFileFast(TESFile* a_mod) override;                                                            // 0C
+		void        SaveGame(BGSSaveFormBuffer* a_buf) override;                                                        // 0E
+		void        LoadGame(BGSLoadFormBuffer* a_buf) override;                                                        // 0F
+		void        Revert(BGSLoadFormBuffer* a_buf) override;                                                          // 12
+		void        InitItemImpl() override;                                                                            // 13
+		void        GetFormDetailedString(char* a_buf, std::uint32_t a_bufLen) override;                                // 16
+		void        SetAltered(bool a_set) override;                                                                    // 24
+		bool        BelongsInGroup(FORM* a_form, bool a_allowParentGroups, bool a_currentOnly) override;                // 30
+		void        CreateGroupData(FORM* a_form, FORM_GROUP* a_group) override;                                        // 31
+		const char* GetFormEditorID() const override;                                                                   // 32
+		bool        SetFormEditorID(const char* a_str) override;                                                        // 33
+		bool        IsParentForm() override;                                                                            // 34 - { return true; }
+		bool        IsFormTypeChild(FormType a_type) override;                                                          // 36
 
 		TESNPC*        GetActorOwner();
 		bhkWorld*      GetbhkWorld() const;
@@ -221,9 +221,9 @@ namespace RE
 		// members
 		mutable BSSpinLock                                   grassCreateLock;   // 030
 		mutable BSSpinLock                                   grassTaskLock;     // 038
-		REX::EnumSet<Flag, std::uint16_t>                    cellFlags;         // 040
+		REX::TEnumSet<Flag, std::uint16_t>                   cellFlags;         // 040
 		std::uint16_t                                        cellGameFlags;     // 042
-		REX::EnumSet<CellState, std::uint8_t>                cellState;         // 044
+		REX::TEnumSet<CellState, std::uint8_t>               cellState;         // 044
 		bool                                                 autoWaterLoaded;   // 045
 		bool                                                 cellDetached;      // 046
 		std::uint8_t                                         pad047;            // 047

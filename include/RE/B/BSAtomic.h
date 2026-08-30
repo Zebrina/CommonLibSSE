@@ -17,22 +17,22 @@ namespace RE
 
 		T operator++()
 		{
-			stl::atomic_ref value{ _value };
+			REX::TAtomicRef value{ _value };
 			return ++value;
 		}
 		[[nodiscard]] T operator++(int)
 		{
-			stl::atomic_ref value{ _value };
+			REX::TAtomicRef value{ _value };
 			return value++;
 		}
 		T operator--()
 		{
-			stl::atomic_ref value{ _value };
+			REX::TAtomicRef value{ _value };
 			return --value;
 		}
 		[[nodiscard]] T operator--(int)
 		{
-			stl::atomic_ref value{ _value };
+			REX::TAtomicRef value{ _value };
 			return value--;
 		}
 
@@ -64,6 +64,11 @@ namespace RE
 	class BSNonReentrantSpinLock
 	{
 	public:
+		BSNonReentrantSpinLock();
+
+		void Lock();
+		void Unlock();
+
 		// members
 		volatile std::uint32_t lock;  // 0
 	};

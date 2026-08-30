@@ -4,13 +4,13 @@ namespace RE
 {
 	NiRefObject::NiRefObject()
 	{
-		stl::atomic_ref objectCount{ *GetTotalObjectCount() };
+		REX::TAtomicRef objectCount{ *GetTotalObjectCount() };
 		++objectCount;
 	}
 
 	NiRefObject::~NiRefObject()
 	{
-		stl::atomic_ref objectCount{ *GetTotalObjectCount() };
+		REX::TAtomicRef objectCount{ *GetTotalObjectCount() };
 		--objectCount;
 	}
 
@@ -21,13 +21,13 @@ namespace RE
 
 	void NiRefObject::IncRefCount()
 	{
-		stl::atomic_ref myRefCount{ _refCount };
+		REX::TAtomicRef myRefCount{ _refCount };
 		++myRefCount;
 	}
 
 	void NiRefObject::DecRefCount()
 	{
-		stl::atomic_ref myRefCount{ _refCount };
+		REX::TAtomicRef myRefCount{ _refCount };
 		if (--myRefCount == 0) {
 			DeleteThis();
 		}
@@ -35,7 +35,7 @@ namespace RE
 
 	volatile std::uint32_t* NiRefObject::GetTotalObjectCount()
 	{
-		static REL::Relocation<volatile std::uint32_t*> totalObjectCount{ Offset::NiRefObject::TotalObjectCount };
+		static REL::Relocation<volatile std::uint32_t*> totalObjectCount{ RELOCATION_ID(523912, 410493) };
 		return totalObjectCount.get();
 	}
 }

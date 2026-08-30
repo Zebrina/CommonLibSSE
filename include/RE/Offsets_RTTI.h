@@ -68,6 +68,7 @@ namespace RE
 	inline constexpr REL::ID RTTI_AlarmPackage{ 394714 };
 	inline constexpr REL::ID RTTI_AlchemyItem{ 392218 };
 	inline constexpr REL::ID RTTI_AllowRotationHandler{ 394999 };
+	inline constexpr REL::ID RTTI_AmiiboEvent{ 564083 };
 	inline constexpr REL::ID RTTI_AnimatedCameraDeltaStartHandler{ 395019 };
 	inline constexpr REL::ID RTTI_AnimatedCameraEndHandler{ 395020 };
 	inline constexpr REL::ID RTTI_AnimatedCameraStartHandler{ 395018 };
@@ -5186,6 +5187,7 @@ namespace RE
 	inline constexpr REL::ID RTTI_ModelReferenceEffect{ 394371 };
 	inline constexpr REL::ID RTTI_Moon{ 393314 };
 	inline constexpr REL::ID RTTI_MotionDrivenHandler{ 394997 };
+	inline constexpr REL::ID RTTI_MotionGestureEvent{ 564082 };
 	inline constexpr REL::ID RTTI_MountDismountEndHandler{ 395004 };
 	inline constexpr REL::ID RTTI_MountInteraction{ 394738 };
 	inline constexpr REL::ID RTTI_MouseMoveEvent{ 398155 };
@@ -5813,12 +5815,13 @@ namespace RE
 	inline constexpr REL::ID RTTI_ShoutHandler{ 394908 };
 	inline constexpr REL::ID RTTI_ShoutMeter{ 396691 };
 	inline constexpr REL::ID RTTI_SimpleAnimationGraphManagerHolder{ 394190 };
+	inline constexpr REL::ID RTTI_SixaxisEvent{ 564068 };
 	inline constexpr REL::ID RTTI_SimpleAnimationGraphManagerLoadingTask{ 394189 };
 	inline constexpr REL::ID RTTI_Sky{ 393319 };
 	inline constexpr REL::ID RTTI_SkyEffectController{ 393321 };
 	inline constexpr REL::ID RTTI_SkyObject{ 393312 };
 	inline constexpr REL::ID RTTI_SkyStaticFindFunctor{ 393322 };
-	inline constexpr REL::ID RTTI_SkyrimScript__A0x17558f7c____GiftMenuCallbackFunc{ 397044 };
+	inline constexpr REL::ID RTTI_SkyrimScript__GiftMenuCallbackFunc{ 397044 };
 	inline constexpr REL::ID RTTI_SkyrimScript__BaseHandleReaderWriter{ 392603 };
 	inline constexpr REL::ID RTTI_SkyrimScript__ConcreteDelayFunctorFactory_SkyrimScript____AddItemFunctor_20_{ 397282 };
 	inline constexpr REL::ID RTTI_SkyrimScript__ConcreteDelayFunctorFactory_SkyrimScript____AddRemoveConstraintFunctor_15_{ 397166 };
@@ -13253,6 +13256,7 @@ namespace RE
 	inline constexpr REL::ID RTTI_NavMeshSearchMaxCost(static_cast<std::uint64_t>(686152));
 	inline constexpr REL::ID RTTI_NavMeshSearchMultipleGoals(static_cast<std::uint64_t>(686154));
 	inline constexpr REL::ID RTTI_NavMeshSearchSLPoint(static_cast<std::uint64_t>(686155));
+	inline constexpr REL::ID RTTI_NeedToUpdateCreationClubCallback{ 688875 };
 	inline constexpr REL::ID RTTI_NewInventoryMenuItemLoadTask(static_cast<std::uint64_t>(688850));
 	inline constexpr REL::ID RTTI_NiAVObject(static_cast<std::uint64_t>(684827));
 	inline constexpr REL::ID RTTI_NiAVObjectPalette(static_cast<std::uint64_t>(690434));
@@ -13778,7 +13782,7 @@ namespace RE
 	inline constexpr REL::ID RTTI_SkyEffectController(static_cast<std::uint64_t>(685536));
 	inline constexpr REL::ID RTTI_SkyObject(static_cast<std::uint64_t>(685527));
 	inline constexpr REL::ID RTTI_SkyStaticFindFunctor(static_cast<std::uint64_t>(685537));
-	inline constexpr REL::ID RTTI_SkyrimScript__A0xc250f300____GiftMenuCallbackFunc(static_cast<std::uint64_t>(689189));
+	inline constexpr REL::ID RTTI_SkyrimScript__GiftMenuCallbackFunc(static_cast<std::uint64_t>(689189));
 	inline constexpr REL::ID RTTI_SkyrimScript__BaseHandleReaderWriter(static_cast<std::uint64_t>(684873));
 	inline constexpr REL::ID RTTI_SkyrimScript__ConcreteDelayFunctorFactory_SkyrimScript____AddItemFunctor_20_(static_cast<std::uint64_t>(689427));
 	inline constexpr REL::ID RTTI_SkyrimScript__ConcreteDelayFunctorFactory_SkyrimScript____AddRemoveConstraintFunctor_15_(static_cast<std::uint64_t>(689311));

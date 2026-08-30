@@ -1,8 +1,8 @@
 #pragma once
 
 #include "RE/B/BGSDirectionalAmbientLightingColors.h"
+#include "RE/B/BSSimpleList.h"
 #include "RE/B/BSTArray.h"
-#include "RE/B/BSTList.h"
 #include "RE/C/Color.h"
 #include "RE/F/FormTypes.h"
 #include "RE/T/TESForm.h"
@@ -60,7 +60,7 @@ namespace RE
 
 		struct ColorTypes
 		{
-			enum
+			enum ColorType : std::uint32_t
 			{
 				kSkyUpper = 0,
 				kFogNear,
@@ -83,6 +83,7 @@ namespace RE
 				kTotal
 			};
 		};
+		using ColorType = ColorTypes::ColorType;
 
 		struct RecordFlags
 		{
@@ -107,24 +108,24 @@ namespace RE
 			static_assert(sizeof(Color3) == 0x3);
 
 			// members
-			std::uint8_t                                windSpeed;                    // 00
-			std::int8_t                                 unk01;                        // 01
-			std::int8_t                                 unk02;                        // 02
-			std::int8_t                                 transDelta;                   // 03
-			std::int8_t                                 sunGlare;                     // 04
-			std::int8_t                                 sunDamage;                    // 05
-			std::int8_t                                 precipitationBeginFadeIn;     // 06
-			std::int8_t                                 precipitationEndFadeOut;      // 07
-			std::int8_t                                 thunderLightningBeginFadeIn;  // 08
-			std::int8_t                                 thunderLightningEndFadeOut;   // 09
-			std::int8_t                                 thunderLightningFrequency;    // 0A
-			REX::EnumSet<WeatherDataFlag, std::uint8_t> flags;                        // 0B
-			Color3                                      lightningColor;               // 0C
-			std::int8_t                                 visualEffectBegin;            // 0F
-			std::int8_t                                 visualEffectEnd;              // 10
-			std::int8_t                                 windDirection;                // 11
-			std::int8_t                                 windDirectionRange;           // 12
-			std::int8_t                                 unk13;                        // 13
+			std::uint8_t                                 windSpeed;                    // 00
+			std::int8_t                                  unk01;                        // 01
+			std::int8_t                                  unk02;                        // 02
+			std::int8_t                                  transDelta;                   // 03
+			std::int8_t                                  sunGlare;                     // 04
+			std::int8_t                                  sunDamage;                    // 05
+			std::int8_t                                  precipitationBeginFadeIn;     // 06
+			std::int8_t                                  precipitationEndFadeOut;      // 07
+			std::int8_t                                  thunderLightningBeginFadeIn;  // 08
+			std::int8_t                                  thunderLightningEndFadeOut;   // 09
+			std::int8_t                                  thunderLightningFrequency;    // 0A
+			REX::TEnumSet<WeatherDataFlag, std::uint8_t> flags;                        // 0B
+			Color3                                       lightningColor;               // 0C
+			std::int8_t                                  visualEffectBegin;            // 0F
+			std::int8_t                                  visualEffectEnd;              // 10
+			std::int8_t                                  windDirection;                // 11
+			std::int8_t                                  windDirectionRange;           // 12
+			std::int8_t                                  unk13;                        // 13
 		};
 		static_assert(sizeof(Data) == 0x14);
 
@@ -147,8 +148,8 @@ namespace RE
 		{
 		public:
 			// members
-			FormID                                 soundFormID;  // 00
-			REX::EnumSet<SoundType, std::uint32_t> type;         // 04
+			FormID                                  soundFormID;  // 00
+			REX::TEnumSet<SoundType, std::uint32_t> type;         // 04
 		};
 		static_assert(sizeof(WeatherSound) == 0x8);
 

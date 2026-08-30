@@ -63,17 +63,17 @@ namespace RE
 		};
 
 		// members
-		REX::EnumSet<Flag, std::uint32_t>              actorBaseFlags;    // 00
-		std::int16_t                                   magickaOffset;     // 04
-		std::int16_t                                   staminaOffset;     // 06
-		std::uint16_t                                  level;             // 08
-		std::uint16_t                                  calcLevelMin;      // 0A
-		std::uint16_t                                  calcLevelMax;      // 0C
-		std::uint16_t                                  speedMult;         // 0E
-		std::uint16_t                                  baseDisposition;   // 10 - unused
-		REX::EnumSet<TEMPLATE_USE_FLAG, std::uint16_t> templateUseFlags;  // 12
-		std::int16_t                                   healthOffset;      // 14
-		std::int16_t                                   bleedoutOverride;  // 16
+		REX::TEnumSet<Flag, std::uint32_t>              actorBaseFlags;    // 00
+		std::int16_t                                    magickaOffset;     // 04
+		std::int16_t                                    staminaOffset;     // 06
+		std::uint16_t                                   level;             // 08
+		std::uint16_t                                   calcLevelMin;      // 0A
+		std::uint16_t                                   calcLevelMax;      // 0C
+		std::uint16_t                                   speedMult;         // 0E
+		std::uint16_t                                   baseDisposition;   // 10 - unused
+		REX::TEnumSet<TEMPLATE_USE_FLAG, std::uint16_t> templateUseFlags;  // 12
+		std::int16_t                                    healthOffset;      // 14
+		std::int16_t                                    bleedoutOverride;  // 16
 	};
 	static_assert(sizeof(ACTOR_BASE_DATA) == 0x18);
 
@@ -122,12 +122,20 @@ namespace RE
 			return func(this);
 		}
 
+		void SetFlagBit(ACTOR_BASE_DATA::Flag a_flag, bool a_val, bool a_addChange)
+		{
+			using func_t = decltype(&TESActorBaseData::SetFlagBit);
+			static REL::Relocation<func_t> func{ RELOCATION_ID(14261, 14383) };
+			func(this, a_flag, a_val, a_addChange);
+		}
+
 		// members
 		ACTOR_BASE_DATA        actorData;         // 08
 		TESLevItem*            deathItem;         // 20 - INAM
 		BGSVoiceType*          voiceType;         // 28 - VTCK
 		TESForm*               baseTemplateForm;  // 30 - TPLT
-		TESForm**              templateForms;     // 38
+		std::uint32_t          changeFlags;       // 38
+		std::uint32_t          pad3C;             // 3C
 		BSTArray<FACTION_RANK> factions;          // 40
 	};
 	static_assert(sizeof(TESActorBaseData) == 0x58);

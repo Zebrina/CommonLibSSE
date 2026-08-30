@@ -58,11 +58,40 @@ namespace RE
 		inline static void Deallocate(T* a_array)
 		{
 			if (a_array) {
-				auto head = stl::adjust_pointer<std::size_t>(a_array, -stl::ssizeof_v<std::uintptr_t>);
+				auto head = REX::ADJUST_POINTER<std::size_t>(a_array, -0x8);
 				for (std::size_t i = 0; i < *head; ++i) {
 					a_array[i].~T();
 				}
 				free(head);
+			}
+		};
+	};
+
+	template <class T>
+	class NiTScrapHeapInterface
+	{
+	public:
+		inline static T* Allocate(std::size_t a_numElements)
+		{
+			auto heap = MemoryManager::GetSingleton();
+			auto allocator = heap ? heap->GetThreadScrapHeap() : nullptr;
+			assert(allocator);
+
+			std::size_t size = sizeof(T) * a_numElements;
+			auto        mem = allocator->Allocate(size, alignof(void*));
+			assert(mem != nullptr);
+			std::memset(mem, 0, size);
+			return static_cast<T*>(mem);
+		};
+
+		inline static void Deallocate(T* a_array)
+		{
+			if (a_array) {
+				auto heap = MemoryManager::GetSingleton();
+				auto allocator = heap ? heap->GetThreadScrapHeap() : nullptr;
+				assert(allocator);
+
+				allocator->Deallocate(a_array);
 			}
 		};
 	};

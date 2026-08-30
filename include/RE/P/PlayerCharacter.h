@@ -2,11 +2,11 @@
 
 #include "RE/B/BGSDefaultObjectManager.h"
 #include "RE/B/BSPointerHandle.h"
+#include "RE/B/BSSimpleList.h"
 #include "RE/B/BSSoundHandle.h"
 #include "RE/B/BSTArray.h"
 #include "RE/B/BSTEvent.h"
 #include "RE/B/BSTHashMap.h"
-#include "RE/B/BSTList.h"
 #include "RE/B/BSTSmartPointer.h"
 #include "RE/B/BSTTuple.h"
 #include "RE/C/Character.h"
@@ -45,6 +45,9 @@ namespace RE
 	class UserEventEnabledEvent;
 	struct BGSActorCellEvent;
 	struct BGSActorDeathEvent;
+#ifdef SKYRIM_SUPPORT_AE
+	class BSSystemEvent;
+#endif
 	struct PerkRankData;
 	struct PositionPlayerEvent;
 	struct TESQuestStageItem;
@@ -127,9 +130,9 @@ namespace RE
 	{
 	public:
 		// members
-		float                                      timer;   // 0
-		RefHandle                                  refObj;  // 4
-		REX::EnumSet<PLAYER_ACTION, std::uint32_t> next;    // 8
+		float                                       timer;   // 0
+		RefHandle                                   refObj;  // 4
+		REX::TEnumSet<PLAYER_ACTION, std::uint32_t> next;    // 8
 	};
 	static_assert(sizeof(PlayerActionObject) == 0xC);
 
@@ -141,19 +144,17 @@ namespace RE
 		public BSTEventSink<MenuOpenCloseEvent>,     // 2B0
 		public BSTEventSink<MenuModeChangeEvent>,    // 2B8
 		public BSTEventSink<UserEventEnabledEvent>,  // 2C0
-		public BSTEventSink<TESTrackedStatsEvent>    // 2C8
+#ifndef SKYRIM_SUPPORT_AE
+		public BSTEventSink<TESTrackedStatsEvent>  // 2C8
+#else
+		public BSTEventSink<TESTrackedStatsEvent>,  // 2D0
+		public BSTEventSink<BSSystemEvent>          // 2D8
+#endif
 	{
 	public:
 		inline static constexpr auto RTTI = RTTI_PlayerCharacter;
 		inline static constexpr auto VTABLE = VTABLE_PlayerCharacter;
 		inline static constexpr auto FORMTYPE = FormType::ActorCharacter;
-
-		enum class EventType
-		{
-			kThief = 3,
-			kContainer = 5,
-			kDeadBody = 6
-		};
 
 		enum class GrabbingType
 		{
@@ -294,6 +295,7 @@ namespace RE
 			};
 			static_assert(sizeof(Data) == 0x128);
 
+			bool CanLevelUp();
 			void AdvanceLevel(bool a_addThreshold);
 
 			// members
@@ -323,11 +325,13 @@ namespace RE
 		bool                     CenterOnCell(const char* a_cellName);
 		bool                     CenterOnCell(TESObjectCELL* a_cell);
 		bool                     CheckCast(MagicItem* a_spell, Effect* a_effect, MagicSystem::CannotCastReason& a_reason);
+		void                     CheckPoisonWeapon(AlchemyItem* a_poison);
 		void                     DestroyMouseSprings();
 		void                     EndGrabObject();
 		NiPointer<Actor>         GetActorDoingPlayerCommand() const;
 		float                    GetArmorValue(InventoryEntryData* a_form);
 		float                    GetDamage(InventoryEntryData* a_form);
+		float                    GetEquippedWeaponsDamage();
 		NiPointer<TESObjectREFR> GetGrabbedRef();
 		std::int32_t             GetItemCount(TESBoundObject* a_object);
 		std::uint32_t            GetNumTints(std::uint32_t a_tintType);
@@ -337,7 +341,6 @@ namespace RE
 		bool                     HasActorDoingCommand() const;
 		bool                     IsGrabbing() const;
 		void                     PlayMagicFailureSound(MagicSystem::SpellType a_spellType);
-		void                     PlayPickupEvent(TESForm* a_item, TESForm* a_containerOwner, TESObjectREFR* a_containerRef, EventType a_eventType);
 		void                     SetAIDriven(bool a_enable);
 		void                     SetEscaping(bool a_flag, bool a_escaped);
 		void                     StartGrabObject();
@@ -487,13 +490,13 @@ namespace RE
 		TESImageSpaceModifier*                                  sunGazeImageSpaceModifier;                    // AE0
 		ActorValue                                              advanceSkill;                                 // AE8 - advance values set, then cleared in PlayerSkills::ModSkillPoints surronding ApplyPerkEntry
 		std::uint32_t                                           advanceAction;                                // AEC - Part of AE8 and 9F0
-		REX::EnumSet<DEFAULT_OBJECT, std::int32_t>              animationObjectAction;                        // AF0
-		REX::EnumSet<GrabbingType, std::uint32_t>               grabType;                                     // AF4
+		REX::TEnumSet<DEFAULT_OBJECT, std::int32_t>             animationObjectAction;                        // AF0
+		REX::TEnumSet<GrabbingType, std::uint32_t>              grabType;                                     // AF4
 		std::int32_t                                            difficulty;                                   // AF8
 		ActorHandle                                             assumedIdentity;                              // AFC
 		std::int8_t                                             murder;                                       // B00
-		std::int8_t                                             perkCount;                                    // B01
-		REX::EnumSet<ByCharGenFlag, std::uint8_t>               byCharGenFlag;                                // B02
+		std::uint8_t                                            perkCount;                                    // B01
+		REX::TEnumSet<ByCharGenFlag, std::uint8_t>              byCharGenFlag;                                // B02
 		std::uint8_t                                            padB03;                                       // B03
 		std::uint32_t                                           unkB04;                                       // B04
 		Crime*                                                  resistArrestCrime;                            // B08
@@ -523,6 +526,6 @@ namespace RE
 #ifndef SKYRIM_SUPPORT_AE
 	static_assert(sizeof(PlayerCharacter) == 0xBE0);
 #else
-	static_assert(sizeof(PlayerCharacter) == 0xBE8);
+	static_assert(sizeof(PlayerCharacter) == 0xBF0);
 #endif
 }

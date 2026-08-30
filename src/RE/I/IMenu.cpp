@@ -75,6 +75,9 @@ namespace RE
 		if (UpdateUsesCursor()) {
 			Message messageID;
 			auto    uiStr = InterfaceStrings::GetSingleton();
+			if (!uiStr) {
+				return;
+			}
 			if (gamepad) {
 				menuFlags.reset(Flag::kUsesCursor);
 				messageID = Message::kHide;

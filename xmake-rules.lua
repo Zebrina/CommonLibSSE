@@ -11,6 +11,7 @@ constinit auto SKSEPlugin_Version = []() {
     v.UsesAddressLibrary();
     v.UsesUpdatedStructs();
     v.CompatibleVersions({ SKSE::RUNTIME_SSE_LATEST });
+    v.MinimumRequiredXSEVersion({ 2, 3, 0, 0 });
     return v;
 }();
 #else
@@ -22,13 +23,13 @@ bool SKSEPlugin_Query(const SKSE::QueryInterface* a_skse, SKSE::PluginInfo* a_in
     a_info->version = REL::Version{ ${PLUGIN_VERSION_MAJOR}, ${PLUGIN_VERSION_MINOR}, ${PLUGIN_VERSION_PATCH}, 0 }.pack();
 
     if (a_skse->IsEditor()) {
-        SKSE::log::critical("Loaded in editor, marking as incompatible");
+        REX::CRITICAL("Loaded in editor, marking as incompatible");
         return false;
     }
 
     const auto ver = a_skse->RuntimeVersion();
     if (ver < SKSE::RUNTIME_SSE_1_5_39) {
-        SKSE::log::critical("Unsupported runtime version {}", ver.string());
+        REX::CRITICAL("Unsupported runtime version {}", ver.string());
         return false;
     }
 

@@ -7,12 +7,12 @@ namespace RE
 		charge(0.0F),
 		pad14(0)
 	{
-		stl::emplace_vtable(this);
+		REX::EMPLACE_VTABLE(this);
 	}
 
 	ExtraDataType ExtraCharge::GetType() const
 	{
-		return ExtraDataType::kCannotWear;
+		return ExtraDataType::kCharge;
 	}
 
 	bool ExtraCharge::IsNotEqual(const BSExtraData* a_rhs) const

@@ -3,10 +3,10 @@
 #include "RE/B/BGSStoryManagerTreeForm.h"
 #include "RE/B/BSAtomic.h"
 #include "RE/B/BSFixedString.h"
+#include "RE/B/BSSimpleList.h"
 #include "RE/B/BSString.h"
 #include "RE/B/BSTArray.h"
 #include "RE/B/BSTHashMap.h"
-#include "RE/B/BSTList.h"
 #include "RE/D/DialogueTypes.h"
 #include "RE/F/FormTypes.h"
 #include "RE/Q/QuestEvents.h"
@@ -103,10 +103,10 @@ namespace RE
 		};
 
 		// members
-		float                                  questDelayTime;  // 0
-		REX::EnumSet<QuestFlag, std::uint16_t> flags;           // 4
-		std::int8_t                            priority;        // 6
-		REX::EnumSet<Type, std::uint8_t>       questType;       // 7
+		float                                   questDelayTime;  // 0
+		REX::TEnumSet<QuestFlag, std::uint16_t> flags;           // 4
+		std::int8_t                             priority;        // 6
+		REX::TEnumSet<Type, std::uint8_t>       questType;       // 7
 	};
 	static_assert(sizeof(QUEST_DATA) == 0x8);
 
@@ -122,10 +122,10 @@ namespace RE
 		};
 
 		// members
-		std::uint16_t                    index;  // 0
-		REX::EnumSet<Flag, std::uint8_t> flags;  // 2
-		std::uint8_t                     pad3;   // 3
-		std::uint32_t                    pad4;   // 4
+		std::uint16_t                     index;  // 0
+		REX::TEnumSet<Flag, std::uint8_t> flags;  // 2
+		std::uint8_t                      pad3;   // 3
+		std::uint32_t                     pad4;   // 4
 	};
 	static_assert(sizeof(QUEST_STAGE_DATA) == 0x8);
 
@@ -148,14 +148,16 @@ namespace RE
 			kCompassMarkerIgnoresLocks = 1 << 0
 		};
 
-		RefHandle& GetTargetReference(RefHandle& a_out, bool a_useExtraList, TESQuest* a_quest);
+		ObjectRefHandle& GetTargetRef(ObjectRefHandle& a_out, bool a_allowPickUpActor, const TESQuest* a_quest);
+		ObjectRefHandle& GetTrackingRef(ObjectRefHandle& a_out, const TESQuest* a_quest);
 
 		// members
-		std::uint64_t unk00;         // 00
-		TESCondition  conditions;    // 08
-		std::uint32_t alias;         // 10
-		std::uint32_t unk14;         // 14
-		TeleportPath  teleportPath;  // 18
+		REX::TEnumSet<Flag, std::uint8_t> flags;         // 00
+		std::uint8_t                      pad01[7];      // 01
+		TESCondition                      conditions;    // 08
+		std::uint32_t                     alias;         // 10
+		std::uint32_t                     pad14;         // 14
+		TeleportPath                      teleportPath;  // 18
 	};
 	static_assert(sizeof(TESQuestTarget) == 0x60);
 
@@ -163,15 +165,15 @@ namespace RE
 	{
 	public:
 		// members
-		BSFixedString                                      displayText;  // 00 - NNAM
-		TESQuest*                                          ownerQuest;   // 08
-		TESQuestTarget**                                   targets;      // 10 - QSTA
-		std::uint32_t                                      numTargets;   // 18
-		std::uint16_t                                      index;        // 1C - QOBJ
-		bool                                               initialized;  // 1E
-		REX::EnumSet<QUEST_OBJECTIVE_STATE, std::uint8_t>  state;        // 1E
-		REX::EnumSet<QUEST_OBJECTIVE_FLAGS, std::uint32_t> flags;        // 20 - FNAM
-		std::uint32_t                                      pad24;        // 24
+		BSFixedString                                       displayText;  // 00 - NNAM
+		TESQuest*                                           ownerQuest;   // 08
+		TESQuestTarget**                                    targets;      // 10 - QSTA
+		std::uint32_t                                       numTargets;   // 18
+		std::uint16_t                                       index;        // 1C - QOBJ
+		bool                                                initialized;  // 1E
+		REX::TEnumSet<QUEST_OBJECTIVE_STATE, std::uint8_t>  state;        // 1E
+		REX::TEnumSet<QUEST_OBJECTIVE_FLAGS, std::uint32_t> flags;        // 20 - FNAM
+		std::uint32_t                                       pad24;        // 24
 	};
 	static_assert(sizeof(BGSQuestObjective) == 0x28);
 
@@ -241,6 +243,7 @@ namespace RE
 		ObjectRefHandle                          GetAliasedRef(std::uint32_t a_aliasID) const;
 		std::uint16_t                            GetCurrentStageID() const;
 		[[nodiscard]] constexpr QUEST_DATA::Type GetType() const noexcept { return data.questType.get(); }
+		void                                     GetJournalTextForInstance(BSString& out, std::uint32_t instanceID);
 		bool                                     IsActive() const;
 		bool                                     IsCompleted() const;
 		bool                                     IsEnabled() const;

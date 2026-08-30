@@ -7,6 +7,7 @@
 #include "RE/M/MenuEventHandler.h"
 #include "RE/N/NiMatrix3.h"
 #include "RE/N/NiPoint3.h"
+#include "RE/T/TESObjectREFR.h"
 
 namespace RE
 {
@@ -14,7 +15,6 @@ namespace RE
 	class NiAVObject;
 	class NiControllerManager;
 	class NiControllerSequence;
-	class TESObjectREFR;
 
 	// menuDepth = 3
 	// flags = kPausesGame | kDisablePauseMenu | kRequiresUpdate
@@ -43,7 +43,10 @@ namespace RE
 		// override (BSTEventSink<MenuOpenCloseEvent>)
 		BSEventNotifyControl ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource) override;  // 01
 
-		[[nodiscard]] static TESObjectREFR* GetTargetReference();
+		[[nodiscard]] static TESObjectREFRPtr GetTargetReference();
+		[[nodiscard]] static std::int32_t     GetCurrentLockDifficulty();
+
+		static void OpenMenu(TESObjectREFR* a_target);  // a_ref must be locked and player must have lockpicks
 
 		// members
 		ModelDBHandle         lockModel;            // 048
@@ -79,6 +82,23 @@ namespace RE
 		bool                  isLockpickingCrime;   // 10D
 		std::uint8_t          unk10E;               // 10E
 		std::uint8_t          pad10F;               // 10F
+#ifdef SKYRIM_SUPPORT_AE
+		float         unk110;     // 110
+		float         unk114;     // 114
+		std::uint32_t unk118;     // 118
+		bool          unk11C;     // 11C
+		bool          unk11D;     // 11D
+		bool          unk11E;     // 11E
+		bool          unk11F;     // 11F
+		bool          unk120;     // 120
+		bool          unk121;     // 121
+		bool          unk122;     // 122
+		std::uint8_t  pad123[5];  // 123
+#endif
 	};
+#ifndef SKYRIM_SUPPORT_AE
 	static_assert(sizeof(LockpickingMenu) == 0x110);
+#else
+	static_assert(sizeof(LockpickingMenu) == 0x128);
+#endif
 }

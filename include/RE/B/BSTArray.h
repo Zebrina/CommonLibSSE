@@ -30,12 +30,20 @@ namespace RE
 
 		constexpr BSTArrayBase() noexcept = default;
 		constexpr BSTArrayBase(const BSTArrayBase&) noexcept = default;
-		constexpr BSTArrayBase(BSTArrayBase&&) noexcept = default;
+		constexpr BSTArrayBase(BSTArrayBase&& a_rhs) noexcept :
+			_size(a_rhs.size())
+		{
+			a_rhs._size = 0;
+		}
 
 		inline ~BSTArrayBase() noexcept { _size = 0; }
 
 		BSTArrayBase& operator=(const BSTArrayBase&) noexcept = default;
-		BSTArrayBase& operator=(BSTArrayBase&&) noexcept = default;
+		BSTArrayBase& operator=(BSTArrayBase&& a_rhs) noexcept
+		{
+			_size = a_rhs.size();
+			a_rhs._size = 0;
+		}
 
 		[[nodiscard]] constexpr bool      empty() const noexcept { return _size == 0; }
 		[[nodiscard]] constexpr size_type size() const noexcept { return _size; }
@@ -120,12 +128,11 @@ namespace RE
 		inline void* allocate(std::size_t a_size)
 		{
 			const auto mem = malloc(a_size);
-			if (!mem) {
-				stl::report_and_fail("out of memory"sv);
-			} else {
-				std::memset(mem, 0, a_size);
-				return mem;
-			}
+			if (!mem)
+				REX::FAIL("out of memory");
+
+			std::memset(mem, 0, a_size);
+			return mem;
 		}
 
 		inline void deallocate(void* a_ptr) { free(a_ptr); }
@@ -198,12 +205,11 @@ namespace RE
 		{
 			if (a_size > N) {
 				const auto mem = malloc(a_size);
-				if (!mem) {
-					stl::report_and_fail("out of memory"sv);
-				} else {
-					std::memset(mem, 0, a_size);
-					return mem;
-				}
+				if (!mem)
+					REX::FAIL("out of memory");
+
+				std::memset(mem, 0, a_size);
+				return mem;
 			} else {
 				return _data.local;
 			}
@@ -242,7 +248,7 @@ namespace RE
 			if (!local()) {
 				const auto mem = malloc(capacity());
 				if (!mem) {
-					stl::report_and_fail("out of memory"sv);
+					REX::FAIL("out of memory"sv);
 				} else {
 					_data.heap = mem;
 				}

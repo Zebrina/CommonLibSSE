@@ -43,7 +43,7 @@ namespace RE
 		deferInitialization(false),
 		forceConeOfFire(false)
 	{
-		stl::emplace_vtable(this);
+		REX::EMPLACE_VTABLE(this);
 	}
 
 	Projectile::LaunchData::LaunchData(Actor* a_shooter, const NiPoint3& a_origin, const ProjectileRot& a_angles, MagicItem* a_spell) :
@@ -156,4 +156,13 @@ namespace RE
 
 		return LaunchArrow(a_result, a_shooter, a_ammo, a_weap, origin, angles);
 	}
+
+	void Projectile::Kill()
+	{
+		using func_t = decltype(&Projectile::Kill);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(42930, 44110) };
+
+		return func(this);
+	}
+
 }

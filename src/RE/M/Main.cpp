@@ -8,7 +8,7 @@ namespace RE
 {
 	Main* Main::GetSingleton()
 	{
-		static REL::Relocation<Main**> singleton{ Offset::Main::Singleton };
+		static REL::Relocation<Main**> singleton{ RELOCATION_ID(516943, 403449) };
 		return *singleton;
 	}
 
@@ -36,6 +36,13 @@ namespace RE
 	{
 		static REL::Relocation<NiPointer<SceneGraph>*> nodePtr{ RELOCATION_ID(517006, 403513) };
 		return nodePtr->get();
+	}
+
+	void Main::RenderWorld(bool a_unk)
+	{
+		using func_t = decltype(&Main::RenderWorld);
+		static REL::Relocation<func_t> func{ RELOCATION_ID(100424, 107142) };
+		return func(a_unk);
 	}
 
 	void Main::SetActive(bool a_active)

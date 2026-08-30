@@ -32,8 +32,8 @@ namespace RE
 			kDisableCollision = 1 << 13
 		};
 
-		float                             time;   // 0
-		REX::EnumSet<Flag, std::uint32_t> flags;  // 4
+		float                              time;   // 0
+		REX::TEnumSet<Flag, std::uint32_t> flags;  // 4
 	};
 	static_assert(sizeof(NiUpdateData) == 0x8);
 
@@ -54,6 +54,10 @@ namespace RE
 		inline static constexpr auto Ni_RTTI = NiRTTI_NiAVObject;
 		inline static constexpr auto VTABLE = VTABLE_NiAVObject;
 
+		/*
+		 *	These flags were taken from Fallout 4, but FO4 has a 64-bit flags type, and many of the flags are in
+		 *	different locations. Some names could be wrong.
+		 */
 		enum class Flag
 		{
 			kNone = 0,
@@ -68,7 +72,7 @@ namespace RE
 			kSaveExternalGeometryData = 1 << 9,
 			kNoDecals = 1 << 10,
 			kAlwaysDraw = 1 << 11,
-			kMeshLOD = 1 << 12,
+			kPreProcessedNode = 1 << 12,
 			kFixedBound = 1 << 13,
 			kTopFadeNode = 1 << 14,
 			kIgnoreFade = 1 << 15,
@@ -76,13 +80,16 @@ namespace RE
 			kNoAnimSyncY = 1 << 17,
 			kNoAnimSyncZ = 1 << 18,
 			kNoAnimSyncS = 1 << 19,
-			kNoDismember = 1 << 20,
+			kNotVisible = 1 << 20,
 			kNoDismemberValidity = 1 << 21,
 			kRenderUse = 1 << 22,
-			kMaterialsApplied = 1 << 23,
+			kShadowReceiver = 1 << 23,
 			kHighDetail = 1 << 24,
 			kForceUpdate = 1 << 25,
-			kPreProcessedNode = 1 << 26
+			kAccumulated = 1 << 26,
+			kMeshLOD = 1 << 27,
+			kUnk28 = 1 << 28,
+			kShadowCaster = 1 << 29
 		};
 
 		~NiAVObject() override;  // 00
@@ -112,9 +119,8 @@ namespace RE
 		virtual void        UpdateTransformAndBounds(NiUpdateData& a_data);                                                     // 31
 		virtual void        PreAttachUpdate(NiNode* a_parent, NiUpdateData& a_data);                                            // 32
 		virtual void        PostAttachUpdate();                                                                                 // 33
-		virtual void        OnVisible(NiCullingProcess& a_process);                                                             // 34 - { return; }
+		virtual void        OnVisible(NiCullingProcess& a_process, std::int32_t a_alphaGroupIndex);                             // 34 - { return; }
 
-		[[nodiscard]] NiAVObject*         Clone();
 		void                              CullGeometry(bool a_cull);
 		void                              CullNode(bool a_cull);
 		[[nodiscard]] bool                GetAppCulled() const;
@@ -137,24 +143,26 @@ namespace RE
 		void                              UpdateHairColor(const NiColor& a_color);
 		void                              UpdateMaterialAlpha(float a_alpha, bool a_doOnlySkin);
 		void                              UpdateRigidConstraints(bool a_enable, std::uint8_t a_arg2 = 1, std::uint32_t a_arg3 = 1);
+		int                               IsVisualObjectI();
+		void                              Cull(NiCullingProcess* a_culler, std::int32_t a_alphaGroupIndex);
 
 		// members
-		NiNode*                           parent;                   // 030
-		std::uint32_t                     parentIndex;              // 038
-		std::uint32_t                     unk03C;                   // 03C
-		NiPointer<NiCollisionObject>      collisionObject;          // 040
-		NiTransform                       local;                    // 048
-		NiTransform                       world;                    // 07C
-		NiTransform                       previousWorld;            // 0B0
-		NiBound                           worldBound;               // 0E4
-		REX::EnumSet<Flag, std::uint32_t> flags;                    // 0F4
-		TESObjectREFR*                    userData;                 // 0F8
-		float                             fadeAmount;               // 100
-		std::uint32_t                     lastUpdatedFrameCounter;  // 104
-		std::uint8_t                      unk108;                   // 108
-		std::uint8_t                      flags02;                  // 109
-		std::uint16_t                     unk10A;                   // 10A
-		std::uint32_t                     pad10C;                   // 10C
+		NiNode*                            parent;                   // 030
+		std::uint32_t                      parentIndex;              // 038
+		std::uint32_t                      unk03C;                   // 03C
+		NiPointer<NiCollisionObject>       collisionObject;          // 040
+		NiTransform                        local;                    // 048
+		NiTransform                        world;                    // 07C
+		NiTransform                        previousWorld;            // 0B0
+		NiBound                            worldBound;               // 0E4
+		REX::TEnumSet<Flag, std::uint32_t> flags;                    // 0F4
+		TESObjectREFR*                     userData;                 // 0F8
+		float                              fadeAmount;               // 100
+		std::uint32_t                      lastUpdatedFrameCounter;  // 104
+		std::uint8_t                       unk108;                   // 108
+		std::uint8_t                       flags02;                  // 109
+		std::uint16_t                      unk10A;                   // 10A
+		std::uint32_t                      pad10C;                   // 10C
 	};
 	static_assert(sizeof(NiAVObject) == 0x110);
 }
